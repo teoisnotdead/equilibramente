@@ -1,23 +1,30 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import Image from 'next/image'
 import { Button }   from '@/components/ui/button'
 import { Input }    from '@/components/ui/input'
 import { Label }    from '@/components/ui/label'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+
+const quotes = [
+  "Un pequeño paso cada día te acerca a un gran cambio.",
+  "Comienza a darte el mismo cuidado que das a los demás.",
+  "La tranquilidad interior es el nuevo éxito.",
+  "Observa tu mente sin juzgarla.",
+  "Tu salud mental es una prioridad, no un lujo."
+]
 
 export default function RegisterPage() {
   const router = useRouter()
   const [error, setError]     = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [quote, setQuote]     = useState(quotes[0])
+
+  useEffect(() => {
+    setQuote(quotes[Math.floor(Math.random() * quotes.length)])
+  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -48,17 +55,36 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle className="text-2xl">Crear cuenta</CardTitle>
-          <CardDescription>
-            Comienza a registrar tu bienestar emocional
-          </CardDescription>
-        </CardHeader>
-
-        <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
+    <div className="container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+      <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r" style={{ backgroundColor: 'var(--primary)' }}>
+        <div className="absolute inset-0 bg-primary" />
+        <div className="relative z-20 flex items-center gap-2 text-lg font-medium">
+          <Image src="/logo.png" alt="Logo" width={32} height={32} className="brightness-0 invert" />
+          <span style={{ fontFamily: 'var(--font-display)' }}>EquilibraMente</span>
+        </div>
+        <div className="relative z-20 mt-auto">
+          <blockquote className="space-y-2">
+            <p className="text-2xl" style={{ fontFamily: 'var(--font-display)' }}>
+              &ldquo;{quote}&rdquo;
+            </p>
+          </blockquote>
+        </div>
+      </div>
+      <div className="lg:p-8 p-4 h-screen flex items-center justify-center">
+        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+          <div className="flex flex-col space-y-2 text-center">
+            {/* Mobile logo */}
+            <div className="flex lg:hidden items-center justify-center gap-2 mb-4">
+              <Image src="/logo.png" alt="Logo" width={32} height={32} />
+              <span className="text-xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>EquilibraMente</span>
+            </div>
+            <h1 className="text-2xl font-semibold tracking-tight">Crear cuenta</h1>
+            <p className="text-sm text-muted-foreground">
+              Comienza a registrar tu bienestar emocional
+            </p>
+          </div>
+          
+          <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
               <p className="text-sm text-destructive bg-destructive/10 px-3 py-2 rounded-md">
                 {error}
@@ -88,7 +114,7 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 pb-6">
               <Label htmlFor="password">Contraseña</Label>
               <Input
                 id="password"
@@ -100,21 +126,20 @@ export default function RegisterPage() {
                 autoComplete="new-password"
               />
             </div>
-          </CardContent>
 
-          <CardFooter className="flex flex-col gap-3">
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Creando cuenta...' : 'Registrarse'}
             </Button>
-            <p className="text-sm text-muted-foreground text-center">
-              ¿Ya tienes cuenta?{' '}
-              <a href="/login" className="text-primary underline underline-offset-4">
-                Inicia sesión
-              </a>
-            </p>
-          </CardFooter>
-        </form>
-      </Card>
-    </main>
+          </form>
+
+          <p className="px-8 text-center text-sm text-muted-foreground">
+            ¿Ya tienes cuenta?{' '}
+            <Link href="/login" className="cursor-pointer underline underline-offset-4 hover:text-primary">
+              Inicia sesión aquí
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
   )
 }

@@ -1,6 +1,6 @@
 import type { User, MoodEntry, Habit, HabitLog, HabitCategory } from '@prisma/client'
+import type { DomainError } from '@/lib/errors'
 
-// Re-exportar tipos generados por Prisma
 export type { User, MoodEntry, Habit, HabitLog, HabitCategory }
 
 // DTO público de usuario (nunca exponer passwordHash)
@@ -30,7 +30,7 @@ export type CreateHabitLogInput = {
   completed: boolean
 }
 
-// Result pattern para services — nunca lanzar excepciones al route handler
+// ServiceResult tipado con DomainError — nunca strings sueltos
 export type ServiceResult<T> =
-  | { data: T; error: null }
-  | { data: null; error: string }
+  | { data: T;    error: null }
+  | { data: null; error: DomainError }

@@ -1,6 +1,7 @@
 import { registerSchema } from '@/lib/validations/auth.schema'
 import { authService } from '@/lib/services/auth.service'
 import { logger } from '@/lib/logger'
+import { DomainError, DomainErrorMessage, getHttpStatus } from '@/lib/errors'
 
 export async function POST(req: Request) {
   try {
@@ -17,8 +18,10 @@ export async function POST(req: Request) {
     const result = await authService.register(parsed.data)
 
     if (result.error) {
-      const status = result.error.includes('ya está registrado') ? 409 : 500
-      return Response.json({ error: result.error }, { status })
+      return Response.json(
+        { error: DomainErrorMessage[result.error] },
+        { status: getHttpStatus(result.error) }
+      )
     }
 
     return Response.json({ data: result.data }, { status: 201 })

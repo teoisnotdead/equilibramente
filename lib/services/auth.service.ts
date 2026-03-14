@@ -3,13 +3,14 @@ import { userDal } from '@/lib/dal/user.dal'
 import { logger } from '@/lib/logger'
 import type { ServiceResult, UserPublic } from '@/types'
 import type { RegisterDto } from '@/lib/validations/auth.schema'
+import { DomainError } from '@/lib/errors'
 
 export const authService = {
   async register(dto: RegisterDto): Promise<ServiceResult<UserPublic>> {
     try {
       const existing = await userDal.findByEmail(dto.email)
       if (existing) {
-        return { data: null, error: 'El correo ya está registrado' }
+        return { data: null, error: DomainError.AUTH_EMAIL_EXISTS }
       }
 
       const passwordHash = await bcrypt.hash(dto.password, 12)
@@ -26,7 +27,7 @@ export const authService = {
       return { data: userPublic, error: null }
     } catch (err) {
       logger.error({ err }, 'authService.register failed')
-      return { data: null, error: 'Error interno al registrar usuario' }
+      return { data: null, error: DomainError.AUTH_REGISTER_FAILED }
     }
   },
 
