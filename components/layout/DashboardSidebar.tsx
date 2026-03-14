@@ -1,5 +1,7 @@
 import Link from 'next/link'
 
+import Image from 'next/image'
+
 const navItems = [
   { href: '/dashboard', label: 'Inicio',    icon: '🏠' },
   { href: '/mood',      label: 'Ánimo',     icon: '😊' },
@@ -11,12 +13,9 @@ const navItems = [
 export function DashboardSidebar() {
   return (
     <aside className="hidden md:flex w-60 flex-col border-r border-border bg-card px-4 py-6">
-      {/* Logo */}
       <div className="mb-8 flex items-center gap-2 px-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-bold">
-          E
-        </div>
-        <span className="font-semibold tracking-tight">EquilibraMente</span>
+        <Image src="/logo.png" alt="Logo EquilibraMente" width={32} height={32} className="w-auto h-auto" />
+        <span className="font-semibold tracking-tight text-xl" style={{ fontFamily: 'var(--font-display)' }}>EquilibraMente</span>
       </div>
 
       {/* Nav */}

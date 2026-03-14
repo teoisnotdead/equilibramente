@@ -58,7 +58,7 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-md">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2">
-            <Image src="/logo.png" alt="EquilibraMente Logo" width={32} height={32} className="cursor-pointer" />
+            <Image src="/logo.png" alt="EquilibraMente Logo" width={32} height={32} className="cursor-pointer w-auto h-auto" />
             <span className="text-lg font-semibold tracking-tight cursor-pointer">EquilibraMente</span>
           </div>
           <div className="flex items-center gap-3">
@@ -84,7 +84,7 @@ export default function LandingPage() {
             }}
           />
           <div className="relative mx-auto max-w-6xl grid items-center gap-12 lg:grid-cols-2">
-            
+
             {/* Texto Hero */}
             <div className="text-center lg:text-left">
               <Badge variant="secondary" className="mb-6 px-4 py-1.5 text-sm">
@@ -123,11 +123,12 @@ export default function LandingPage() {
               <div className="relative aspect-square w-full max-w-[500px]">
                 {/* Glow decorativo de fondo */}
                 <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full" />
-                <Image 
-                  src="/hero-illustration.png" 
-                  alt="Ilustración 3D de balance y bienestar" 
-                  fill 
-                  className="object-contain relative z-10 drop-shadow-2xl hover:scale-105 transition-transform duration-700 ease-out" 
+                <Image
+                  src="/hero-illustration.png"
+                  alt="Ilustración 3D de balance y bienestar"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 500px"
+                  className="object-contain relative z-10 drop-shadow-2xl hover:scale-105 transition-transform duration-700 ease-out"
                   priority
                 />
               </div>
@@ -232,11 +233,10 @@ export default function LandingPage() {
                   ].map((item) => (
                     <div
                       key={item.score}
-                      className={`flex flex-col items-center gap-1 rounded-xl p-3 transition-all cursor-pointer ${
-                        item.score === 4
-                          ? 'bg-primary text-primary-foreground scale-110 shadow-md'
-                          : 'bg-muted hover:bg-primary/20'
-                      }`}
+                      className={`flex flex-col items-center gap-1 rounded-xl p-3 transition-all cursor-pointer ${item.score === 4
+                        ? 'bg-primary text-primary-foreground scale-110 shadow-md'
+                        : 'bg-muted hover:bg-primary/20'
+                        }`}
                     >
                       <span className="text-2xl">{item.emoji}</span>
                       <span className="text-xs font-medium">{item.score}</span>
@@ -279,10 +279,10 @@ export default function LandingPage() {
       <footer className="border-t border-border px-6 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-muted-foreground md:flex-row">
           <div className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-            <Image src="/logo.png" alt="EquilibraMente Logo" width={24} height={24} className="grayscale brightness-50 contrast-200 dark:invert" />
+            <Image src="/logo.png" alt="EquilibraMente Logo" width={24} height={24} className="w-auto h-auto grayscale brightness-50 contrast-200 dark:invert" />
             <span>EquilibraMente</span>
           </div>
-          <p>Proyecto de Título — Ingeniería en Informática · {new Date().getFullYear()}</p>
+          <p><strong>Salvador Saavedra</strong> - Proyecto de Título - Ingeniería en Informática · {new Date().getFullYear()}</p>
           <div className="flex gap-4">
             <Link href="/login" className="cursor-pointer hover:text-foreground transition-colors">Iniciar sesión</Link>
             <Link href="/register" className="cursor-pointer hover:text-foreground transition-colors">Registrarse</Link>
