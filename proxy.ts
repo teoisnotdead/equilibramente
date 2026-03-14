@@ -5,7 +5,7 @@ import type { NextRequest } from 'next/server'
 const AUTH_ROUTES    = ['/login', '/register']
 const PROTECTED_BASE = ['/dashboard', '/mood', '/habits', '/history', '/settings']
 
-export default auth(function middleware(req: NextRequest & { auth: { user?: { id: string } } | null }) {
+export default auth(function proxy(req: NextRequest & { auth: { user?: { id: string } } | null }) {
   const { nextUrl } = req
   const session = (req as typeof req & { auth: { user?: { id: string } } | null }).auth
 

@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EquilibraMente
 
-## Getting Started
+Plataforma web para el seguimiento del estado de ánimo y hábitos de autocuidado en adultos jóvenes.
 
-First, run the development server:
+Proyecto de Título — Ingeniería en Informática — IACC
 
+## Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Base de datos**: PostgreSQL 16 (Docker)
+- **ORM**: Prisma 5
+- **Autenticación**: NextAuth.js v5 (JWT)
+- **UI**: Tailwind CSS v4 + shadcn/ui
+- **Gráficos**: Recharts
+- **Testing**: Jest + React Testing Library
+
+## Requisitos previos
+
+- Node.js 20+
+- pnpm
+- Docker (para PostgreSQL)
+
+## Instalación
+
+### 1. Clonar el repositorio
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <url-del-repo>
+cd equilibramente
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Instalar dependencias
+```bash
+pnpm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Variables de entorno
+Crear `.env` en la raíz:
+```
+DATABASE_URL="postgresql://postgres:123456@localhost:5432/equilibramenteapp?schema=public"
+NEXTAUTH_SECRET="cambiar-en-produccion"
+AUTH_URL="http://localhost:3000"
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Levantar PostgreSQL con Docker
+```bash
+docker run --name equilibramente-app -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=123456 -e POSTGRES_DB=equilibramenteapp -p 5432:5432 -v pgdata_equilibra:/var/lib/postgresql/data -d postgres:16
+```
 
-## Learn More
+### 5. Migrar la base de datos
+```bash
+npx prisma migrate dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 6. Cargar datos de demostración
+```bash
+npx prisma db seed
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 7. Iniciar el servidor
+```bash
+pnpm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Abrir [http://localhost:3000](http://localhost:3000)
 
-## Deploy on Vercel
+**Usuario demo**: demo@equilibramente.cl  
+**Contraseña**: Demo1234!
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Comandos útiles
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm run dev          # Servidor de desarrollo
+pnpm run build        # Build de producción
+pnpm run test         # Ejecutar tests
+pnpm run test:coverage # Cobertura de tests
+npx prisma studio  # Explorador de base de datos
+```
+
+## Estructura del proyecto
+
+```
+equilibramente/
+├── app/                  # Páginas y API routes (Next.js App Router)
+│   ├── (auth)/           # Login y registro
+│   ├── (dashboard)/      # Páginas protegidas
+│   ├── (marketing)/      # Landing page pública
+│   └── api/              # Endpoints REST
+├── lib/
+│   ├── dal/              # Data Access Layer (Prisma queries)
+│   ├── services/         # Lógica de negocio
+│   ├── validations/      # Schemas Zod
+│   └── errors.ts         # Enum de errores de dominio
+├── components/           # Componentes React
+├── prisma/               # Schema y migraciones
+└── __tests__/            # Tests unitarios
+```
+
+## Funcionalidades del MVP
+
+- ✅ Registro e inicio de sesión
+- ✅ Registro diario de estado de ánimo (escala 1–5)
+- ✅ Registro de hábitos de autocuidado
+- ✅ Historial semanal y mensual
+- ✅ Gráficos de tendencias
+- ✅ Pruebas unitarias (23 tests)

@@ -48,3 +48,23 @@ seed_error.log
 seed_error2.log
 seed.log
 
+# Env
+.env
+.env.local
+.env*.local
+
+# DB
+*.db
+*.db-journal
+dev.db
+
+# Logs
+*.log
+logs/
+
+# Testing
+coverage/
+
+# OS
+.DS_Store
+Thumbs.db
