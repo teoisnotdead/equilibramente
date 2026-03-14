@@ -145,11 +145,27 @@ export const habitService = {
 
   async getTodayLogs(
     userId: string
-  ): Promise<ServiceResult<(HabitLog & { habit: { id: string; name: string; category: string } })[]>> {
+  ): Promise<ServiceResult<{ habitId: string; habitName: string; category: string; completed: boolean }[]>> {
     try {
-      const today = normalizeDate(new Date())
-      const logs  = await habitLogDal.findTodayByUser(userId, today)
-      return { data: logs, error: null }
+      const today  = normalizeDate(new Date())
+      const habits = await habitDal.findAllByUser(userId)
+
+      if (habits.length === 0) {
+        return { data: [], error: null }
+      }
+
+      const logMap = await habitLogDal.findTodayByUserGrouped(userId, today)
+
+      // Cruzar todos los hábitos activos con sus logs del día
+      // Si no hay log todavía, completed = false por defecto
+      const result = habits.map((habit) => ({
+        habitId:   habit.id,
+        habitName: habit.name,
+        category:  habit.category,
+        completed: logMap.get(habit.id) ?? false,
+      }))
+
+      return { data: result, error: null }
     } catch (err) {
       logger.error({ err, userId }, 'habitService.getTodayLogs failed')
       return { data: null, error: DomainError.HABIT_FETCH_FAILED }

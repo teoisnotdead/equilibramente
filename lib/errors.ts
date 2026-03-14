@@ -20,6 +20,9 @@ export enum DomainError {
   HABIT_DELETE_FAILED   = 'HABIT_DELETE_FAILED',
   HABIT_LOG_SAVE_FAILED = 'HABIT_LOG_SAVE_FAILED',
   HABIT_FETCH_FAILED    = 'HABIT_FETCH_FAILED',
+
+  // Stats
+  STATS_FETCH_FAILED    = 'STATS_FETCH_FAILED',
 }
 
 // Mensajes legibles para el usuario final
@@ -42,6 +45,9 @@ export const DomainErrorMessage: Record<DomainError, string> = {
   [DomainError.HABIT_DELETE_FAILED]:   'Error al eliminar el hábito',
   [DomainError.HABIT_LOG_SAVE_FAILED]: 'Error al registrar el hábito',
   [DomainError.HABIT_FETCH_FAILED]:    'Error al obtener los hábitos',
+
+  // Stats
+  [DomainError.STATS_FETCH_FAILED]:    'Error al obtener las estadísticas',
 }
 
 // Mapeo de DomainError a HTTP status code

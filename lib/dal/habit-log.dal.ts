@@ -68,4 +68,19 @@ export const habitLogDal = {
       },
     })
   },
+
+  async findTodayByUserGrouped(
+    userId: string,
+    date: Date
+  ): Promise<Map<string, boolean>> {
+    const logs = await prisma.habitLog.findMany({
+      where: {
+        habit: { userId, isActive: true },
+        date,
+      },
+      select: { habitId: true, completed: true },
+    })
+
+    return new Map(logs.map((l) => [l.habitId, l.completed]))
+  },
 }

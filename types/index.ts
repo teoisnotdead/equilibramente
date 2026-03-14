@@ -34,3 +34,28 @@ export type CreateHabitLogInput = {
 export type ServiceResult<T> =
   | { data: T;    error: null }
   | { data: null; error: DomainError }
+
+// Stats
+export type MoodTrendPoint = {
+  date:  string  // ISO date string YYYY-MM-DD
+  score: number
+}
+
+export type HabitComplianceItem = {
+  habitId:       string
+  name:          string
+  category:      string
+  totalDays:     number
+  completedDays: number
+  percentage:    number  // 0–100, redondeado a 1 decimal
+}
+
+export type StatsResult = {
+  period:          'week' | 'month'
+  periodDays:      number
+  moodAverage:     number | null
+  moodTrend:       MoodTrendPoint[]
+  habitCompliance: HabitComplianceItem[]
+  topHabit:        HabitComplianceItem | null
+}
+
