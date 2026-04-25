@@ -56,6 +56,6 @@ export type StatsResult = {
   moodAverage:     number | null
   moodTrend:       MoodTrendPoint[]
   habitCompliance: HabitComplianceItem[]
-  topHabit:        HabitComplianceItem | null
+  topHabits:       HabitComplianceItem[]
 }
 
