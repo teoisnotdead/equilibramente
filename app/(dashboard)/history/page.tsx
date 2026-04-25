@@ -56,10 +56,16 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
             <Card>
               <CardContent className="pt-6 text-center">
                 <p className="text-3xl font-bold text-primary">
-                  {stats.data.topHabit ? `${stats.data.topHabit.percentage}%` : '—'}
+                  {stats.data.topHabits && stats.data.topHabits.length > 0 
+                    ? `${stats.data.topHabits[0].percentage}%` 
+                    : '—'}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {stats.data.topHabit ? stats.data.topHabit.name : 'Mejor hábito'}
+                  {stats.data.topHabits && stats.data.topHabits.length > 0 
+                    ? (stats.data.topHabits.length === 1 
+                        ? stats.data.topHabits[0].name 
+                        : `Mejores hábitos (${stats.data.topHabits.length})`) 
+                    : 'Mejor hábito'}
                 </p>
               </CardContent>
             </Card>

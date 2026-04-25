@@ -80,12 +80,15 @@ export const statsService = {
         days
       )
 
-      // Top habit — mayor porcentaje, null si no hay hábitos
-      const topHabit = habitCompliance.length > 0
-        ? habitCompliance.reduce((best, current) =>
-            current.percentage > best.percentage ? current : best
-          )
-        : null
+      // Top habits — encontrar el porcentaje máximo y filtrar todos los que lo tengan
+      let topHabits: HabitComplianceItem[] = []
+      if (habitCompliance.length > 0) {
+        const maxPercentage = Math.max(...habitCompliance.map(h => h.percentage))
+        // Solo consideraremos como "top" si al menos se ha cumplido algo (> 0%)
+        if (maxPercentage > 0) {
+          topHabits = habitCompliance.filter(h => h.percentage === maxPercentage)
+        }
+      }
 
       const result: StatsResult = {
         period,
@@ -93,7 +96,7 @@ export const statsService = {
         moodAverage,
         moodTrend,
         habitCompliance,
-        topHabit,
+        topHabits,
       }
 
       logger.info({ userId, period, moodAverage }, 'stats.get')

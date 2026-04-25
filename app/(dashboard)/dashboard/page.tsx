@@ -81,17 +81,41 @@ export default async function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-base">Tendencia semanal</CardTitle>
+              <CardTitle className="text-base">Tendencia de Ánimo Semanal</CardTitle>
               <CardDescription>
                 {weekStats.data.moodAverage !== null
-                  ? `Promedio: ${weekStats.data.moodAverage} / 5`
+                  ? `Promedio de ánimo: ${weekStats.data.moodAverage} / 5`
                   : 'Sin registros esta semana'}
               </CardDescription>
             </div>
-            {weekStats.data.topHabit && (
-              <Badge variant="secondary">
-                🏆 {weekStats.data.topHabit.name} — {weekStats.data.topHabit.percentage}%
-              </Badge>
+            {weekStats.data.habitCompliance && weekStats.data.habitCompliance.length > 0 && (
+              <div className="flex flex-wrap gap-2 justify-end max-w-[60%]">
+                {[...weekStats.data.habitCompliance].sort((a, b) => b.percentage - a.percentage).map(habit => {
+                  let variant: "default" | "secondary" | "destructive" | "outline" = "secondary"
+                  let icon = "🎯"
+
+                  if (habit.percentage === 100) {
+                    variant = "default"
+                    icon = "🏆"
+                  } else if (habit.percentage < 40) {
+                    variant = "destructive"
+                    icon = "⚠️"
+                  } else if (habit.percentage < 75) {
+                    variant = "outline"
+                    icon = "📊"
+                  }
+
+                  return (
+                    <Badge 
+                      key={habit.habitId} 
+                      variant={variant} 
+                      className="whitespace-nowrap"
+                    >
+                      {icon} {habit.name} — {habit.percentage}%
+                    </Badge>
+                  )
+                })}
+              </div>
             )}
           </CardHeader>
           <CardContent>
