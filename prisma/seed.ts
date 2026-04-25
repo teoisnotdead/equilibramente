@@ -5,31 +5,36 @@ import type { HabitCategory } from '@prisma/client'
 async function main() {
   console.log('🌱 Iniciando seed de demostración...')
 
-  // Limpiar datos existentes del usuario demo
-  const existing = await prisma.user.findUnique({
-    where: { email: 'demo@equilibramente.cl' }
+  const email = 'demo@equilibramente.cl'
+
+  console.log(`🧹 Limpiando datos del usuario demo (${email})...`)
+  const existingUser = await prisma.user.findUnique({
+    where: { email },
   })
-  if (existing) {
-    await prisma.user.delete({ where: { id: existing.id } })
+
+  if (existingUser) {
+    await prisma.user.delete({
+      where: { email },
+    })
   }
 
   const passwordHash = await bcrypt.hash('Demo1234!', 12)
 
   const user = await prisma.user.create({
     data: {
-      email:        'demo@equilibramente.cl',
-      name:         'Valentina Muñoz',
+      email: 'demo@equilibramente.cl',
+      name: 'Salvador Saavedra',
       passwordHash,
     },
   })
 
   // Hábitos variados y realistas
   const habitData: { name: string; category: HabitCategory }[] = [
-    { name: 'Dormir 7-8 horas',      category: 'SLEEP'     },
-    { name: '30 min de ejercicio',   category: 'EXERCISE'  },
-    { name: 'Desayuno saludable',    category: 'NUTRITION' },
-    { name: 'Pausa activa en clases', category: 'BREAKS'   },
-    { name: 'Llamar a un amigo',     category: 'SOCIAL'    },
+    { name: 'Dormir 7-8 horas', category: 'SLEEP' },
+    { name: '30 min de ejercicio', category: 'EXERCISE' },
+    { name: 'Desayuno saludable', category: 'NUTRITION' },
+    { name: 'Pausa activa en clases', category: 'BREAKS' },
+    { name: 'Llamar a un amigo', category: 'SOCIAL' },
   ]
 
   const habits = await Promise.all(
@@ -49,9 +54,9 @@ async function main() {
 
   // Notas opcionales para algunos días
   const notes: Record<number, string> = {
-    0:  'Semana de exámenes, muy estresada',
-    3:  'Mal día, no pude dormir bien',
-    6:  'Fin de semana, me relajé un poco',
+    0: 'Semana de exámenes, muy estresada',
+    3: 'Mal día, no pude dormir bien',
+    6: 'Fin de semana, me relajé un poco',
     10: 'Empecé a hacer ejercicio, me sentí mejor',
     16: '¡Mejor semana del mes!',
     24: 'Todo fluyendo bien',
@@ -84,13 +89,13 @@ async function main() {
     [1, 1, 0, 1, 1],  // día 21
     [1, 1, 1, 1, 0],
     [1, 1, 1, 1, 1],
-    [1, 0, 1, 1, 1],
-    [1, 1, 1, 1, 1],
+    [1, 0, 1, 0, 0],
+    [1, 1, 1, 1, 0],
+    [1, 1, 1, 0, 0],
+    [1, 1, 1, 1, 0],
     [1, 1, 1, 0, 1],
     [1, 1, 1, 1, 0],
-    [1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1],  // día 30
+    [1, 1, 1, 1, 0],  // día 30
   ]
 
   const today = new Date()
@@ -107,8 +112,8 @@ async function main() {
       await prisma.moodEntry.create({
         data: {
           userId: user.id,
-          score:  moodPattern[dayIndex] ?? 3,
-          note:   notes[dayIndex] ?? null,
+          score: moodPattern[dayIndex] ?? 3,
+          note: notes[dayIndex] ?? null,
           date,
         },
       })
@@ -121,7 +126,7 @@ async function main() {
         habits.map((habit, idx) =>
           prisma.habitLog.create({
             data: {
-              habitId:   habit.id,
+              habitId: habit.id,
               date,
               completed: pattern[idx] === 1,
             },
