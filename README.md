@@ -6,12 +6,14 @@ Proyecto de Título — Ingeniería en Informática — IACC
 
 ## Stack
 
-- **Framework**: Next.js 14 (App Router)
+- **Framework**: Next.js 16 (App Router) + React 19
 - **Base de datos**: PostgreSQL 16 (Docker)
 - **ORM**: Prisma 5
-- **Autenticación**: NextAuth.js v5 (JWT)
-- **UI**: Tailwind CSS v4 + shadcn/ui
+- **Autenticación**: NextAuth.js v5 (Auth.js)
+- **UI**: Tailwind CSS v4 + shadcn/ui + Lucide React
 - **Gráficos**: Recharts
+- **Validaciones**: Zod
+- **Logs**: Pino
 - **Testing**: Jest + React Testing Library
 
 ## Requisitos previos
